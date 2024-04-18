@@ -5,14 +5,20 @@ let rl = readline.createInterface({
 })
 
 
-let secretNumber = 7;
+let secretNumber = 0
+let numAttempts = 0
 function checkGuess(num){
-    if (num > secretNumber) {
+    if (numAttempts === 0) {
+        console.log("You lose!")
+        return null
+    } else if (num > secretNumber) {
         console.log("Too High")
+        numAttempts--
         return false
     } else if (num < secretNumber) {
         console.log("Too low")
-        return false
+        numAttempts--
+        return false 
     } else {
         console.log("Correct")
         return true
@@ -22,11 +28,36 @@ function checkGuess(num){
 function askGuess(){
     rl.question("Enter a guess: ", (num) => {
       let boolean =  checkGuess(Number(num))
-            if (boolean) {
-                console.log("You Win!")
-                rl.close()
+        if (boolean === null) {
+            rl.close()
+        } else if (boolean) {
+            console.log("You Win!")
+            rl.close()
         }  else return askGuess()
     });
 }
 
-askGuess()
+function randomInRange(min, max) {
+    return Math.floor(Math.random() * (max - min) + min)
+}
+
+function askRange() {
+    
+    rl.question("Enter a max number: ", (max) => {
+        rl.question("Enter a min number: ", (min) => {
+            console.log("I'm thinking of a number between " + min + " and " + max + "...")
+            secretNumber = randomInRange(Number(min), Number(max))
+            askLimit()
+            
+        })
+    })
+}
+
+function askLimit() {
+    rl.question("Enter number of attempts: ", (num) => {
+        numAttempts = num -1
+        askGuess()
+    })
+}
+
+askRange()
