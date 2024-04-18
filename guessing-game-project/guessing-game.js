@@ -9,7 +9,7 @@ let secretNumber = 0
 let numAttempts = 0
 function checkGuess(num){
     if (numAttempts === 0) {
-        console.log("You lose!")
+        console.log("Out of attempts!")
         return null
     } else if (num > secretNumber) {
         console.log("Too High")
@@ -29,6 +29,7 @@ function askGuess(){
     rl.question("Enter a guess: ", (num) => {
       let boolean =  checkGuess(Number(num))
         if (boolean === null) {
+            console.log("You lose!")
             rl.close()
         } else if (boolean) {
             console.log("You Win!")
@@ -48,7 +49,6 @@ function askRange() {
             console.log("I'm thinking of a number between " + min + " and " + max + "...")
             secretNumber = randomInRange(Number(min), Number(max))
             askLimit()
-            
         })
     })
 }
